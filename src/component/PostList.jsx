@@ -6,9 +6,9 @@ const PostList = () => {
   const { postData } = useContext(PostListContext);
   return (
     <>
-      <Post></Post>
-      <Post></Post>
-      <Post></Post>
+      {postData.map((posts) => (
+        <Post key={posts.id} posts={posts}></Post>
+      ))}
     </>
   );
 };

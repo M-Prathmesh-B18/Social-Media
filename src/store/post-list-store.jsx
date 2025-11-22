@@ -5,8 +5,8 @@ export const PostListContext = createContext({
   deletePost: () => {},
 });
 
-const postReducer = (action, postData) => {
-  let newPost = postData;
+const postReducer = (action, currentpostData) => {
+  let newPost = currentpostData;
   if (action.type === "ADD_POST") {
     // newPost = [
     //   ...postData,
@@ -18,6 +18,9 @@ const postReducer = (action, postData) => {
     // ];
     console.log("on add post Action");
   } else if (action.type === "DELETE_POST") {
+    newPost = currentpostData.filter(
+      (post) => post.id !== action.payload.postid
+    );
   }
   return newPost;
 };
@@ -47,12 +50,7 @@ const PostListProvider = ({ children }) => {
     Default_Post_List
   );
 
-  let name = "shree";
-  let topic = "on  business";
-  let desc =
-    "if you want to best business man the you have quality if leadership";
   const addPost = (name, topic) => {
-    console.log("on add post");
     const addNewPostAction = {
       type: "ADD_POST",
       payload: {
@@ -64,8 +62,13 @@ const PostListProvider = ({ children }) => {
     dispatcherOfPost(addNewPostAction);
   };
 
-  const deletePost = () => {
-    console.log("hello");
+  const deletePost = (postid) => {
+    dispatcherOfPost({
+      type: "DELETE_POST",
+      payload: {
+        postid,
+      },
+    });
   };
 
   return (
