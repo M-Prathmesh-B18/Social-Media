@@ -5,70 +5,48 @@ export const PostListContext = createContext({
   deletePost: () => {},
 });
 
-const postReducer = (action, currentpostData) => {
-  let newPost = currentpostData;
+const postReducer = (postData, action) => {
+  let newPost = postData;
   if (action.type === "ADD_POST") {
-    // newPost = [
-    //   ...postData,
-    //   {
-    //     name: action.payload.CreaterName,
-    //     topic: action.payload.PostTopic,
-    //     desc: action.payload.PostDesc,
-    //   },
-    // ];
-    console.log("on add post Action");
+    newPost = [action.payload, ...postData];
   } else if (action.type === "DELETE_POST") {
-    newPost = currentpostData.filter(
-      (post) => post.id !== action.payload.postid
-    );
+    newPost = postData.filter((item) => item.id !== action.payload.id);
   }
   return newPost;
 };
 
 const PostListProvider = ({ children }) => {
-  const Default_Post_List = [
-    {
-      id: "1",
-      title: "Going To Mumbai ",
-      body: "Hi Friend iam going to mumbai for my vacation.",
-      reactions: 2,
-      userId: "user-9",
-      tags: ["vactaion", "Mumbai", "Enjoying"],
-    },
-    {
-      id: "2",
-      title: "Pass ho gaya",
-      body: "after the 4 year pass in btech.",
-      reactions: 22,
-      userId: "user-12",
-      tags: ["graduation", "unbelivibal"],
-    },
-  ];
+  const Default_Post_List = [];
 
   const [postData, dispatcherOfPost] = useReducer(
     postReducer,
     Default_Post_List
   );
 
-  const addPost = (name, topic) => {
+  const addPost = (userId, postTitle, postBody, reactions, tags) => {
     const addNewPostAction = {
       type: "ADD_POST",
       payload: {
-        CreaterName: name,
-        PostTopic: topic,
-        PostDesc: desc,
+        id: Date.now(),
+        title: postTitle,
+        body: postBody,
+        reactions: reactions,
+        userId: "userId ",
+        tags: tags,
       },
     };
     dispatcherOfPost(addNewPostAction);
+    console.log(`${userId} ${postTitle}${tags}`);
   };
 
-  const deletePost = (postid) => {
-    dispatcherOfPost({
+  const deletePost = (id) => {
+    const deletePostAction = {
       type: "DELETE_POST",
       payload: {
-        postid,
+        id,
       },
-    });
+    };
+    dispatcherOfPost(deletePostAction);
   };
 
   return (
