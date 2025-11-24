@@ -4,7 +4,6 @@ import { PostListContext } from "../store/post-list-store";
 const Post = ({ posts }) => {
   const { deletePost } = useContext(PostListContext);
   const handelOnClicked = (id) => {
-    console.log(id);
     deletePost(id);
   };
   return (
@@ -26,7 +25,7 @@ const Post = ({ posts }) => {
           </span>
         ))}
         <div className="alert alert-success reactions" role="alert">
-          This Post is reacted by {posts.reactions} people.
+          Likes: {posts.reactions.likes} | Dislikes: {posts.reactions.dislikes}
         </div>
       </div>
     </div>

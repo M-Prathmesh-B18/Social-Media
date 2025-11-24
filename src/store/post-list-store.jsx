@@ -3,6 +3,7 @@ export const PostListContext = createContext({
   postData: [],
   addPost: () => {},
   deletePost: () => {},
+  addInitialPosts: () => {},
 });
 
 const postReducer = (postData, action) => {
@@ -11,6 +12,8 @@ const postReducer = (postData, action) => {
     newPost = [action.payload, ...postData];
   } else if (action.type === "DELETE_POST") {
     newPost = postData.filter((item) => item.id !== action.payload.id);
+  } else if (action.type === "ADD_INITIAL_POST") {
+    newPost = action.payload.posts;
   }
   return newPost;
 };
@@ -36,7 +39,16 @@ const PostListProvider = ({ children }) => {
       },
     };
     dispatcherOfPost(addNewPostAction);
-    console.log(`${userId} ${postTitle}${tags}`);
+  };
+
+  const addInitialPosts = (posts) => {
+    const addNewInitialPostAction = {
+      type: "ADD_INITIAL_POST",
+      payload: {
+        posts,
+      },
+    };
+    dispatcherOfPost(addNewInitialPostAction);
   };
 
   const deletePost = (id) => {
@@ -50,7 +62,9 @@ const PostListProvider = ({ children }) => {
   };
 
   return (
-    <PostListContext.Provider value={{ postData, addPost, deletePost }}>
+    <PostListContext.Provider
+      value={{ postData, addPost, deletePost, addInitialPosts }}
+    >
       {children}
     </PostListContext.Provider>
   );
