@@ -9,6 +9,7 @@ export const PostListContext = createContext({
 const postReducer = (postData, action) => {
   let newPost = postData;
   if (action.type === "ADD_POST") {
+    console.log(action.payload.tags);
     newPost = [action.payload, ...postData];
   } else if (action.type === "DELETE_POST") {
     newPost = postData.filter((item) => item.id !== action.payload.id);
@@ -33,8 +34,8 @@ const PostListProvider = ({ children }) => {
         id: Date.now(),
         title: postTitle,
         body: postBody,
-        reactions: reactions,
-        userId: "userId ",
+        reactions: { likes: reactions, dislikes: reactions },
+        userId: userId,
         tags: tags,
       },
     };

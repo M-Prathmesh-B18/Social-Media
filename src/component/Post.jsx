@@ -6,6 +6,7 @@ const Post = ({ posts }) => {
   const handelOnClicked = (id) => {
     deletePost(id);
   };
+
   return (
     <div className="card post-card" style={{ width: "30rem" }}>
       <div className="card-body">
