@@ -1,15 +1,15 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState, useEffect } from "react";
 export const PostListContext = createContext({
   postData: [],
   addPost: () => {},
   deletePost: () => {},
-  addInitialPosts: () => {},
+
+  fetching: false,
 });
 
 const postReducer = (postData, action) => {
   let newPost = postData;
   if (action.type === "ADD_POST") {
-    console.log(action.payload.tags);
     newPost = [action.payload, ...postData];
   } else if (action.type === "DELETE_POST") {
     newPost = postData.filter((item) => item.id !== action.payload.id);
@@ -62,9 +62,37 @@ const PostListProvider = ({ children }) => {
     dispatcherOfPost(deletePostAction);
   };
 
+  //const [fetching, setFetching] = useState(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    setFetching(true);
+
+    fetch("https://dummyjson.com/posts", { signal })
+      .then((res) => res.json())
+      .then((data) => {
+        addInitialPosts(data.posts);
+        setFetching(false);
+      });
+    return () => {
+      console.log("abort the featching");
+      controller.abort();
+    };
+  }, []);
+
+  const [fetching, setFetching] = useState(false);
+
   return (
     <PostListContext.Provider
-      value={{ postData, addPost, deletePost, addInitialPosts }}
+      value={{
+        postData,
+        addPost,
+        deletePost,
+
+        fetching,
+      }}
     >
       {children}
     </PostListContext.Provider>

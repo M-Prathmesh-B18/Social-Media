@@ -5,29 +5,11 @@ import WelcomeMsg from "./WelcomeMsg";
 import LoadingSpinner from "./LoadingSpinner";
 
 const PostList = () => {
-  const { postData, addInitialPosts } = useContext(PostListContext);
+  const { postData, fetching } = useContext(PostListContext);
 
-  const [fetching, setFetching] = useState(false);
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    setFetching(true);
-
-    fetch("https://dummyjson.com/posts", { signal })
-      .then((res) => res.json())
-      .then((data) => {
-        addInitialPosts(data.posts);
-        setFetching(false);
-      });
-    return () => {
-      console.log("abort the featching");
-      controller.abort();
-    };
-  }, []);
   return (
     <>
+      {/* //conditional rendering */}
       {fetching && <LoadingSpinner></LoadingSpinner>}
 
       {!fetching && postData.length === 0 && <WelcomeMsg></WelcomeMsg>}
