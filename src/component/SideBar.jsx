@@ -1,3 +1,5 @@
+import { Link, Links } from "react-router-dom";
+
 const SideBar = ({ selectedTab, setSelectedTab }) => {
   //   const handleOnClicked = (selectedTab) => {
   //     setSelectedTab(selectedTab);
@@ -20,38 +22,24 @@ const SideBar = ({ selectedTab, setSelectedTab }) => {
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
         <li className="nav-item">
-          <a
-            href="#"
-            className={`nav-link text-white  ${
-              selectedTab === "Home" && "active"
-            }`}
-            aria-current="page"
-            onClick={(event) => {
-              setSelectedTab("Home");
-            }}
-          >
+          <Link to="/" className={`nav-link text-white  `} aria-current="page">
             <svg className="bi me-2" width="16" height="16">
               <use xlinkHref="#home"></use>
             </svg>
             Home
-          </a>
+          </Link>
         </li>
         <li>
-          <a
-            href="#"
-            className={`nav-link text-white ${
-              selectedTab === "Create Post" && "active"
-            } `}
+          <Link
+            to="/Create-post"
+            className={`nav-link text-white  `}
             value="Create Post"
-            onClick={(event) => {
-              setSelectedTab("Create Post");
-            }}
           >
             <svg className="bi me-2" width="16" height="16">
               <use xlinkHref="#speedometer2"></use>
             </svg>
             Create Post
-          </a>
+          </Link>
         </li>
       </ul>
       <hr />
